@@ -1,4 +1,4 @@
-const Tasks = require("../models/task");
+const Tasks = require("../models/Task");
 const mongoose = require("mongoose")
 
 
