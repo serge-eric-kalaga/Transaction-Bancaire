@@ -9,27 +9,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 
 
-let tasks = [
-    {
-        id: 1,
-        title: "Task 1",
-        description: "Description 1",
-        completed: false
-    },
-    {
-        id: 2,
-        title: "Task 2",
-        description: "Description 2",
-        completed: false
-    },
-    {
-        id: 3,
-        title: "Task 3",
-        description: "Description 3",
-        completed: false
-    }
-];
-
+const {getAllTasks, getTasksByID, createTask, updateTask, deleteTask} = require("./controllers/tasks")
 
 
 app.get("/", (req, res, next) => {
@@ -40,30 +20,15 @@ app.get("/", (req, res, next) => {
 })
 
 
-app.get("/tasks", (req, res, next) => {
-    res.jsonp(tasks);
-})
+app.get("/tasks", getAllTasks);
 
+app.get("/tasks/:id", getTasksByID);
 
-app.get("/tasks/:id", (req, res, next) => {
-    const id = req.params['id'];
+app.patch("/tasks/:id", updateTask);
 
-    const task_exist = tasks.find(task => task['id'] == id);
+app.delete("/tasks/:id", deleteTask);
 
-    if (task_exist == null) {
-        res.status(404).send("Task not found !");
-    }
-    res.json(task_exist);
-})
-
-
-app.post("/tasks", (req, res, next) => {
-    const new_task = req.body
-    tasks = [...tasks, new_task];
-    // tasks.push(new_task)
-
-    res.json(tasks);
-})
+app.post("/tasks", createTask);
 
 
 app.listen(PORT, "0.0.0.0", () => {
