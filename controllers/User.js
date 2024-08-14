@@ -35,7 +35,7 @@ module.exports = {
                 const token = jsonwebtoken.sign({
                     username: user_exist.username,
                     fullname: user_exist.fullname
-                }, process.env.JWTKey);
+                }, process.env.JWTKey, {expiresIn: 3600});
                 
                 // res.send(checkPassword)
                 res.json({

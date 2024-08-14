@@ -6,12 +6,14 @@ const taskRouter = require("./routes/Task")
 const userRouter = require("./routes/User")
 
 const LoginRequired = require("./middlewares/Auth")
+const loggerMiddleware = require("./middlewares/Logger")
 
 require('dotenv').config()
 
 const app = express();
 
 app.use(express.json());
+app.use(loggerMiddleware)
 
 const PORT = process.env.PORT ;
 
