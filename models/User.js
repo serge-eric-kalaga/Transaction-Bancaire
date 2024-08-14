@@ -17,8 +17,9 @@ const UserModel = mongose.Schema({
 })
 
 
-UserModel.methods.checkPassword  = function (password) {
-    return bcrypt.compareSync(password, this.password);
-}
+// UserModel.methods.checkPassword  = function (password) {
+//     return bcrypt.compareSync(password, this.password);
+// }
+
 
 module.exports = mongose.model("Users", UserModel);
