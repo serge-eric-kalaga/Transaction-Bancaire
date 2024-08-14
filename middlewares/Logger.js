@@ -2,7 +2,19 @@ const fs = require('fs');
 const path = require('path');
 
 
-const logFilePath = path.join(__dirname, 'app.log');
+const logDirectory = path.join(process.cwd(), 'logs');
+
+if (!fs.existsSync(logDirectory)) {
+  fs.mkdirSync(logDirectory, { recursive: true });
+}
+
+const getLogFileName = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = (`0${date.getMonth() + 1}`).slice(-2); // Mois avec zéro devant si nécessaire
+    const day = (`0${date.getDate()}`).slice(-2); // Jour avec zéro devant si nécessaire
+    return path.join(process.cwd(), `/logs/${year}-${month}-${day}.log`);
+  };
 
 const loggerMiddleware = (req, res, next) => {
     const startTime = new Date().toISOString();
@@ -19,7 +31,7 @@ const loggerMiddleware = (req, res, next) => {
 
       const logString = `${startTime}${res?.user ? ' ' + res?.user.username + ' ===> ' : ''} ${method} ${url} | ${res.statusCode} | Durée: ${new Date(endTime) - new Date(startTime)}ms\n`;
 
-      fs.appendFile(`${logFilePath}`, logString, (err) => {
+      fs.appendFile(`${getLogFileName()}`, logString, (err) => {
         if (err) {
           console.error('Erreur lors de l\'écriture du log dans le fichier', err);
         }
