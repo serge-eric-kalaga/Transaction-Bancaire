@@ -1,7 +1,10 @@
 const express = require("express");
 const { connection } = require("mongoose");
 const { connect_db } = require("./configs/Database");
+
 const taskRouter = require("./routes/Task")
+const userRouter = require("./routes/User")
+
 
 const app = express();
 
@@ -21,6 +24,7 @@ app.get("/", (req, res, next) => {
 
 
 app.use("/tasks", taskRouter)
+app.use("/users", userRouter)
 
 
 app.listen(PORT, "0.0.0.0", () => {
