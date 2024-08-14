@@ -17,7 +17,7 @@ module.exports = {
             await newUser.save()
             res.json(newUser)
         } catch (error) {
-            res.send(error.message)
+            res.send(error)
         }
     }
 

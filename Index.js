@@ -5,12 +5,13 @@ const { connect_db } = require("./configs/Database");
 const taskRouter = require("./routes/Task")
 const userRouter = require("./routes/User")
 
+require('dotenv').config()
 
 const app = express();
 
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ;
 
 
 
