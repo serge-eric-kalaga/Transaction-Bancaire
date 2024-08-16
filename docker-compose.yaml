@@ -1,0 +1,52 @@
+# version: '3'
+
+services:
+  express_api:
+    container_name: express_api
+    build: ./app
+    volumes:
+      - ./app:/app/
+    expose:
+      - 5000
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./app/.env
+    depends_on:
+      - mongo_db
+    networks:
+      - asgard
+
+  mongo_db:
+    container_name: mongo_db
+    image: mongo
+    restart: always
+    expose:
+      - 27017
+    env_file:
+      - ./app/.env 
+    volumes:
+      - ./data/mongo:/data/db 
+      - ./data/init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - asgard 
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:5000
+    env_file:
+      - ./app/.env
+    depends_on:
+      - mongo_db
+    networks:
+      - asgard
+      
+
+
+
+
+networks:
+  asgard:

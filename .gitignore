@@ -34,3 +34,8 @@ node_modules
 
 
 package-lock.json
+
+
+# docker database data
+data
+data/*
