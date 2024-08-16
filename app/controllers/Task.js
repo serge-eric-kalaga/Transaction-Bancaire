@@ -3,12 +3,13 @@ const mongoose = require("mongoose")
 
 
 module.exports = {
+
     async getAllTasks(req, res) {
         try {
             const tasks = await Tasks.find({});
-            res.json(tasks);
+            res.Response({data: tasks});
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).Response({ message: error.message });
         }
     },
 
@@ -16,17 +17,17 @@ module.exports = {
         const taskID = req.params.id;
         try {
             if (!mongoose.Types.ObjectId.isValid(taskID)) {
-                return res.status(400).json({ error: 'Invalid task ID' });
+                return res.status(400).Response({message: 'Invalid task ID'});
             }
             const task = await Tasks.findById(taskID);
             if (!task) {
-                return res.status(404).json({ message: "Task not found" });
+                return res.status(404).Response({message: `Task not found.`});
             }
             else {
-                res.json(task);
+                res.Response(task);
             }
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).Response({ message: error.message });
         }
     },
 
@@ -34,9 +35,9 @@ module.exports = {
         try {
             const newTask = new Tasks(req.body);
             await newTask.save();
-            res.json(newTask);
+            res.Response({data: newTask});
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).Response({ message: error.message });
         }
     },
 
@@ -44,16 +45,14 @@ module.exports = {
         const taskID = req.params.id;
         try {
             if (!mongoose.Types.ObjectId.isValid(taskID)) {
-                return res.status(400).json({ error: 'Invalid task ID' });
+                return res.status(400).Response({ message: 'Invalid task ID' });
             }
 
             const task = Tasks.findOneAndUpdate({ _id: taskID }, req.body).then(data => {
                 if (!data) {
-                    res.status(404).send({
-                        message: `Task not found.`
-                    });
+                    res.status(404).Response({message: `Task not found.`});
                 } else {
-                    res.json(data)
+                    res.Response({"data": data})
                 }
             }).catch(err => {
                 res.status(500).send({
@@ -61,21 +60,19 @@ module.exports = {
                 });
             });
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ message: error.message });
         }
     },
 
     async deleteTask(req, res) {
         await Tasks.deleteOne({_id: req.params.id}).then(data => {
             if (data.deletedCount!=1) {
-                res.status(404).send({
-                    message: `Task not found.`
-                });
+                res.status(404).Response({message:`Task not found.`});
             } else {
-                res.send({message: "Task deleted successfully !"});
+                res.Response({message: "Task deleted successfully !"});
             }
         }).catch(err => {
-            res.status(500).send({
+            res.status(500).Response({
                 message: err.message
             });
         });

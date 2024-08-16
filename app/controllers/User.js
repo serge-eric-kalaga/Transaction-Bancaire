@@ -7,9 +7,9 @@ module.exports = {
     async getAllUsers(req, res){
         try {
             const users = await Users.find({})
-            res.json(users)
+            res.Response({data: users})
         } catch (error) {
-            res.send(error.message)
+            res.Response({message: error.message})
         }
     },
 
@@ -17,9 +17,9 @@ module.exports = {
         try {
             const newUser = new Users(req.body)
             await newUser.save()
-            res.json(newUser)
+            res.Response({message: newUser})
         } catch (error) {
-            res.send(error)
+            res.Response({message: error})
         }
     },
 
@@ -29,7 +29,7 @@ module.exports = {
             const checkPassword = bcrypt.compareSync(req.body.password, user_exist.password)
 
             if(!user_exist || !checkPassword){
-                res.status(401).json({message: "Username or password incorrect !"})
+                res.status(401).Response({message: "Username or password incorrect !"})
             }
             else{
                 const token = jsonwebtoken.sign({
@@ -38,7 +38,7 @@ module.exports = {
                 }, process.env.JWTKey, {expiresIn: 3600});
                 
                 // res.send(checkPassword)
-                res.json({
+                res.Response({
                     username: user_exist.username,
                     fullname: user_exist.fullname,
                     token: token 
@@ -46,7 +46,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.send(error)
+            res.Response({message: error})
         }
     }
 
