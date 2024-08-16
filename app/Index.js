@@ -12,6 +12,7 @@ const LoginRequired = require("./middlewares/Auth")
 const loggerMiddleware = require("./middlewares/Logger")
 const globalErrorHandler = require("./middlewares/ErrorHandler")
 const Response = require("./middlewares/Response")
+const {InitUser} = require("./configs/InitData")
 
 
 require('dotenv').config()
@@ -43,5 +44,6 @@ app.use("/users", userRouter)
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`App running on http://localhost:${PORT}`);
     connect_db();
+    InitUser();
 })
 

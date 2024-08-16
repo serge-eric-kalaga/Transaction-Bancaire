@@ -19,7 +19,7 @@ module.exports = {
             await newUser.save()
             res.Response({message: newUser})
         } catch (error) {
-            res.Response({message: error})
+            res.Response({message: error.message})
         }
     },
 
@@ -38,15 +38,15 @@ module.exports = {
                 }, process.env.JWTKey, {expiresIn: 3600});
                 
                 // res.send(checkPassword)
-                res.Response({
+                res.Response({data: {
                     username: user_exist.username,
                     fullname: user_exist.fullname,
                     token: token 
-                })
+                }})
             }
 
         } catch (error) {
-            res.Response({message: error})
+            res.Response({message: error.message})
         }
     }
 
