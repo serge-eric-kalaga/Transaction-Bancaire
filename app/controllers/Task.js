@@ -34,6 +34,8 @@ module.exports = {
     async createTask(req, res) {
         try {
             const newTask = new Tasks(req.body);
+            console.log(res.user);
+            newTask.userId = res.user['_id']
             await newTask.save();
             res.Response({data: newTask});
         } catch (error) {

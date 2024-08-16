@@ -10,9 +10,9 @@ module.exports = function LoginRequired(req, res, next){
             // console.log(res.user);
             next()
         } catch (error) {
-            res.status(401).send(error.message)
+            res.status(401).Response({message: error.message})
         }
     } else {                                                                                                                                                                         
-        res.status(401).send("Not authenticated !")
+        res.status(401).Response({message: "Not authenticated !"})
     }                                                                                                                                                                    
 }

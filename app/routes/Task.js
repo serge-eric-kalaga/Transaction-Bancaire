@@ -3,7 +3,7 @@ const taskRouter = express.Router()
 
 const { getAllTasks, getTasksByID, updateTask, deleteTask, createTask } = require("../controllers/Task");
 
-const LoginRequired = require("../middlewares/Auth")
+// const LoginRequired = require("../middlewares/Auth")
 
 taskRouter.get("/",   getAllTasks);
 // taskRouter.get("/", LoginRequired,  getAllTasks);

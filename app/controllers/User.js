@@ -33,6 +33,7 @@ module.exports = {
             }
             else{
                 const token = jsonwebtoken.sign({
+                    _id: user_exist._id,
                     username: user_exist.username,
                     fullname: user_exist.fullname
                 }, process.env.JWTKey, {expiresIn: 3600});
