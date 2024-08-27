@@ -14,6 +14,7 @@ const loggerMiddleware = require("./middlewares/Logger")
 const globalErrorHandler = require("./middlewares/ErrorHandler")
 const Response = require("./middlewares/Response")
 const {InitUser} = require("./configs/InitData")
+const pino = require('pino-http')()
 
 
 require('dotenv').config()
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use(globalErrorHandler)
 app.use(Response)
 app.use(loggerMiddleware)
+app.use(pino)
 
 const PORT = process.env.PORT ;
 

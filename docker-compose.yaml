@@ -25,12 +25,12 @@ services:
     expose:
       - 27017
     env_file:
-      - ./app/.env 
+      - ./app/.env
     volumes:
-      - ./data/mongo:/data/db 
+      - ./data/mongo:/data/db
       - ./data/init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
-      - asgard 
+      - asgard
 
   mongo-express:
     container_name: mongo-express
@@ -45,50 +45,55 @@ services:
     networks:
       - asgard
 
-
-
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
     volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
     ports:
-      - "6060:9090"
+      - "9090:9090"
     networks:
       - monitoring
+    labels:
+      org.label-schema.group: "monitoring"
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    expose:
+      - 3000
     ports:
-      - "7070:3000"
-    env_file:
-      - ./app/.env
+      - "3000:3000"
     networks:
       - monitoring
-
-  signoz-otel-collector:
-    image: signoz/signoz-otel-collector
-    ports:
-      - "4317:4317" # gRPC port
-      - "55681:55681" # HTTP port
-    networks:
-      - monitoring
-
-  signoz-frontend:
-    image: signoz/frontend
-    ports:
-      - "3301:3301"
-    networks:
-      - monitoring
-
-  signoz-query-service:
-    image: signoz/query-service
-    networks:
-      - monitoring
-
-
-
+    labels:
+      org.label-schema.group: "monitoring"
 
 networks:
   asgard:
   monitoring:
     driver: bridge
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}

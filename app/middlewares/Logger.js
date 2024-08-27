@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const logger = require('../utils/Logger');
 
 
 const logDirectory = path.join(process.cwd(), 'logs');
@@ -36,7 +37,13 @@ const loggerMiddleware = (req, res, next) => {
           console.error('Erreur lors de l\'écriture du log dans le fichier', err);
         }
       });
-  
+
+      // if (res.statusCode >= 400) {
+      //   logger.error(logString);
+      // }
+      // else {
+      //   logger.info(logString);
+      // }
       console.log(logString);
     };
   
