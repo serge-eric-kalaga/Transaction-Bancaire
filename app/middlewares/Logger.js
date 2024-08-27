@@ -38,13 +38,14 @@ const loggerMiddleware = (req, res, next) => {
         }
       });
 
-      // if (res.statusCode >= 400) {
-      //   logger.error(logString);
-      // }
-      // else {
-      //   logger.info(logString);
-      // }
-      console.log(logString);
+      if (res.statusCode >= 400) {
+        logger.level = "error"
+        logger.error(logString);
+      }
+      else {
+        logger.info(logString);
+      }
+      // console.log(logString);
     };
   
     next();

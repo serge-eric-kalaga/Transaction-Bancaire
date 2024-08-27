@@ -14,7 +14,7 @@ const loggerMiddleware = require("./middlewares/Logger")
 const globalErrorHandler = require("./middlewares/ErrorHandler")
 const Response = require("./middlewares/Response")
 const {InitUser} = require("./configs/InitData")
-const pino = require('pino-http')()
+// const pino = require('pino-http')()
 
 
 require('dotenv').config()
@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(globalErrorHandler)
 app.use(Response)
 app.use(loggerMiddleware)
-app.use(pino)
+// app.use(pino)
 
 const PORT = process.env.PORT ;
 
@@ -70,9 +70,9 @@ app.use("/tasks", LoginRequired, taskRouter)
 app.use("/users", userRouter)
 
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", async () => {
     console.log(`App running on http://localhost:${PORT}`);
     connect_db();
-    InitUser();
+    await InitUser();
 })
 

@@ -5,21 +5,25 @@ const bcrypt = require("bcrypt");
 module.exports =
 
 {
-    InitUser() {
+    async InitUser() {
 
+        console.log("========== Initialisation de l'utilisateur par defaut ==========");
         // user exist 
         const username = "serge";
-        const userExist = Users.findOne({ username: username })
-
+        const userExist = Users.findOne({ username: username }).exec();
+        
         if (!userExist) {
-            console.log("========== Initialisation de l'utilisateur par defaut ==========");
 
-            const user = Users.create({
+            const user = new Users({
                 username: username,
-                password: "1234",
+                password: "1234567890",
                 fullname: "Serge Eric Kalaga"
             })
+            await user.save()
             console.log("Initialisation de l'utilisateur par defaut ok !");
+        }
+        else{
+            console.log("=================> Default User Already Exist ! <=================");
         }
     }
 }

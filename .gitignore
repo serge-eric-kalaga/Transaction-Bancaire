@@ -37,5 +37,6 @@ package-lock.json
 
 
 # docker database data
-data
-data/*
+data/mongo/*
+data/mysql/*
+data/postgres/*
