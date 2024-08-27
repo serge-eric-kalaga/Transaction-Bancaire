@@ -2,6 +2,7 @@
 const express = require("express");
 const { connection } = require("mongoose");
 const { connect_db } = require("./configs/Database");
+const client = require('prom-client');
 
 // ============ Import Routes
 const taskRouter = require("./routes/Task")
@@ -19,14 +20,23 @@ require('dotenv').config()
 
 const app = express();
 
+// Création d'un registre pour Prometheus
+const register = new client.Registry();
+// Création de métriques personnalisées
+const httpRequestDurationMicroseconds = new client.Histogram({
+  name: 'http_request_duration_ms',
+  help: 'Durée des requêtes HTTP en ms',
+  labelNames: ['method', 'route', 'code'],
+});
+// Enregistrement des métriques dans le registre
+register.registerMetric(httpRequestDurationMicroseconds);
+
 app.use(express.json());
 app.use(globalErrorHandler)
 app.use(Response)
 app.use(loggerMiddleware)
 
 const PORT = process.env.PORT ;
-
-// app.use(LoginRequired)
 
 
 app.get("/", (req, res, next) => {
@@ -35,6 +45,23 @@ app.get("/", (req, res, next) => {
         succes: true
     });
 })
+
+
+// Middleware pour mesurer la durée des requêtes
+app.use((req, res, next) => {
+    const end = httpRequestDurationMicroseconds.startTimer();
+    res.on('finish', () => {
+      end({ route: req.route ? req.route.path : req.url, code: res.statusCode, method: req.method });
+    });
+    next();
+  });
+
+// Endpoint pour exposer les métriques
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+  });  
+
 
 
 app.use("/tasks", LoginRequired, taskRouter)

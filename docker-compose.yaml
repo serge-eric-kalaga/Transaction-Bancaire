@@ -16,6 +16,7 @@ services:
       - mongo_db
     networks:
       - asgard
+      - monitoring
 
   mongo_db:
     container_name: mongo_db
@@ -43,10 +44,51 @@ services:
       - mongo_db
     networks:
       - asgard
-      
+
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "6060:9090"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "7070:3000"
+    env_file:
+      - ./app/.env
+    networks:
+      - monitoring
+
+  signoz-otel-collector:
+    image: signoz/signoz-otel-collector
+    ports:
+      - "4317:4317" # gRPC port
+      - "55681:55681" # HTTP port
+    networks:
+      - monitoring
+
+  signoz-frontend:
+    image: signoz/frontend
+    ports:
+      - "3301:3301"
+    networks:
+      - monitoring
+
+  signoz-query-service:
+    image: signoz/query-service
+    networks:
+      - monitoring
 
 
 
 
 networks:
   asgard:
+  monitoring:
+    driver: bridge
