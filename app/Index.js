@@ -13,7 +13,8 @@ const LoginRequired = require("./middlewares/Auth")
 const loggerMiddleware = require("./middlewares/Logger")
 const globalErrorHandler = require("./middlewares/ErrorHandler")
 const Response = require("./middlewares/Response")
-const {InitUser} = require("./configs/InitData")
+const {InitUser} = require("./configs/InitData");
+// const { startMetricsServer } = require("./middlewares/Metrics");
 // const pino = require('pino-http')()
 
 
@@ -72,6 +73,7 @@ app.use("/users", userRouter)
 
 app.listen(PORT, "0.0.0.0", async () => {
     console.log(`App running on http://localhost:${PORT}`);
+    // startMetricsServer(app)
     connect_db();
     await InitUser();
 })

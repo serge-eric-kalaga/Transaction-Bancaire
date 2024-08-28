@@ -45,49 +45,83 @@ services:
     networks:
       - asgard
 
-  # prometheus:
-  #   image: prom/prometheus:v2.52.0
-  #   container_name: prometheus
-  #   volumes:
-  #     - ./prometheus:/etc/prometheus
-  #     - prometheus_data:/prometheus
-  #   command:
-  #     - '--config.file=/etc/prometheus/prometheus.yml'
-  #     - '--storage.tsdb.path=/prometheus'
-  #     - '--web.console.libraries=/etc/prometheus/console_libraries'
-  #     - '--web.console.templates=/etc/prometheus/consoles'
-  #     - '--storage.tsdb.retention.time=200h'
-  #     - '--web.enable-lifecycle'
-  #   restart: unless-stopped
-  #   expose:
-  #     - 9090
-  #   ports:
-  #     - "9090:9090"
-  #   networks:
-  #     - monitoring
-  #   labels:
-  #     org.label-schema.group: "monitoring"
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
 
-  # grafana:
-  #   image: grafana/grafana:11.0.0
-  #   container_name: grafana
-  #   volumes:
-  #     - grafana_data:/var/lib/grafana
-  #     - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-  #     - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-  #   environment:
-  #     - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
-  #     - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
-  #     - GF_USERS_ALLOW_SIGN_UP=false
-  #   restart: unless-stopped
-  #   expose:
-  #     - 3000
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - monitoring
-  #   labels:
-  #     org.label-schema.group: "monitoring"
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus
+      - ./monitoring/prometheus/prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    depends_on:
+      - express_api
+      - cadvisor
+    expose:
+      - 9090
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+    labels:
+      org.label-schema.group: "monitoring"
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: alertmanager
+    volumes:
+      - ./monitoring/alertmanager:/etc/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    expose:
+      - 9093
+    networks:
+      - monitoring
+    labels:
+      org.label-schema.group: "monitoring"
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    volumes:
+      # - ./monitoring/grafana/grafana_data:/var/lib/grafana
+      # - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - "./monitoring/grafana/provisioning/dashboards/dashboard.json:/etc/grafana/dashboards/dashboard.json"
+      - "./monitoring/grafana/provisioning/dashboards/default.yaml:/etc/grafana/dashboards/default.yaml"
+      - "./monitoring/grafana/provisioning/datasources/datasources.yml:/etc/grafana/datasources/datasources.yml"
+    depends_on:
+      - prometheus
+    env_file:
+      - ./monitoring/grafana/.env
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    networks:
+      - monitoring
+    labels:
+      org.label-schema.group: "monitoring"
 
 networks:
   asgard:
