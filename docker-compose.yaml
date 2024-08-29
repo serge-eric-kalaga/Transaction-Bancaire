@@ -20,22 +20,34 @@ services:
     env_file:
       - ./app/.env
     depends_on:
-      - mongo_db
+      - mysql_db
     networks:
       - asgard
       - monitoring
 
-  mongo_db:
-    container_name: mongo_db
-    image: mongo
-    # build: ./data/mongo
+  mysql_db:
+    container_name: mysql_db
+    image: mysql
     restart: always
     expose:
-      - 27017
+      - 3306
     env_file:
-      - ./data/mongo/.env
+      - ./app/.env
     volumes:
-      - ./data/mongo/src:/data/db
+      - ./data/mysql/src:/var/lib/mysql
+    networks:
+      - asgard
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8082:80
+    env_file:
+      - ./app/.env
+    depends_on:
+      - mysql_db
     networks:
       - asgard
 

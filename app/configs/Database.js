@@ -1,16 +1,44 @@
-// getting-started.js
-const mongoose = require('mongoose');
-const logger = require('../utils/Logger');
+const logger = require("../utils/Logger");
+const { Sequelize } = require("sequelize");
+
+const DB = new Sequelize(
+  process.env.MYSQL_DATABASE,
+  process.env.MYSQL_USER,
+  process.env.MYSQL_PASSWORD,
+  {
+    host: process.env.DATABASE_HOST,
+    dialect: "mysql",
+    logging: logger.debug.bind(logger),
+    // operatorsAliases: false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+    timezone: "+00:00",
+  }
+);
+
+const connect_db = async () => {
+  try {
+    await DB.authenticate();
+    console.log(
+      "=================> Base de données connectées ! <================="
+    );
+    return DB;
+  } catch (error) {
+    console.log(error);
+    // logger.error(
+    //   "=================> Erreur lors de la connexion à la base de données <=================\n",
+    //   error
+    // );
+    process.exit(1);
+  }
+};
 
 
-module.exports.connect_db = async () => {
-    try {
-        await mongoose.connect(process.env.DATABASE_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log("=================> Base de données connectées ! <=================");
-    } catch (error) {
-        logger.error("=================> rreur lors de la connexion à la base de données <=================\n", error);        
-    }
-}
+module.exports = {
+  DB,
+  connect_db,
+};

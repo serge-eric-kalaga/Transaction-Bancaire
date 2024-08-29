@@ -1,11 +1,9 @@
 // ============ Modules
 const express = require("express");
-const { connection } = require("mongoose");
 const { connect_db } = require("./configs/Database");
 const client = require('prom-client');
 
 // ============ Import Routes
-const taskRouter = require("./routes/Task")
 const userRouter = require("./routes/User")
 
 // ============ Import Middlewares
@@ -14,8 +12,6 @@ const loggerMiddleware = require("./middlewares/Logger")
 const globalErrorHandler = require("./middlewares/ErrorHandler")
 const Response = require("./middlewares/Response")
 const {InitUser} = require("./configs/InitData");
-// const { startMetricsServer } = require("./middlewares/Metrics");
-// const pino = require('pino-http')()
 
 
 require('dotenv').config()
@@ -67,14 +63,13 @@ app.get('/metrics', async (req, res) => {
 
 
 
-app.use("/tasks", LoginRequired, taskRouter)
+// My routers
 app.use("/users", userRouter)
 
 
 app.listen(PORT, "0.0.0.0", async () => {
     console.log(`App running on http://localhost:${PORT}`);
-    // startMetricsServer(app)
     connect_db();
-    await InitUser();
+    // await InitUser();
 })
 
