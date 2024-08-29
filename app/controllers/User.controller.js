@@ -6,7 +6,9 @@ module.exports = {
 
     async getAllUsers(req, res) {
         try {
-            const users = await User.findAll();
+            const users = await User.findAll({
+                attributes: ["id", "nom_prenom", "username"]
+            });
             res.Response({ data: users })
         } catch (error) {
             res.Response({ message: error.message })
@@ -26,9 +28,27 @@ module.exports = {
         }
     },
 
+    async getUserById(req, res) {
+        try {
+            const user = await User.findOne({
+                where: {
+                    username: req.params.username
+                }
+            })
+            res.Response({ data: user })
+        } catch (error) {
+            res.Response({ message: error.message })
+        }
+    },
+
     async loginUser(req, res) {
         try {
-            const user_exist = await Users.findOne({ username: req.body.username });
+            
+            const user_exist = await User.findOne({
+                where: {
+                    username: req.body.username,
+                }
+            });
 
             if (!user_exist) {
                 res.status(401).Response({ message: "Username or password incorrect !" })
