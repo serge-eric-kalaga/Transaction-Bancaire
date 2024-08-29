@@ -2,7 +2,7 @@ const express = require("express")
 
 const userRouter = express.Router()
 
-const {getAllUsers, createUser, loginUser} = require("../controllers/User")
+const {getAllUsers, createUser, loginUser} = require("../controllers/User.controller")
 
 userRouter.get("/", getAllUsers)
 

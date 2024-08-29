@@ -4,7 +4,7 @@ const { connect_db } = require("./configs/Database");
 const client = require('prom-client');
 
 // ============ Import Routes
-const userRouter = require("./routes/User")
+const userRouter = require("./routes/User.route")
 
 // ============ Import Middlewares
 const LoginRequired = require("./middlewares/Auth")

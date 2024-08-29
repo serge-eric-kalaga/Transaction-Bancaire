@@ -1,4 +1,4 @@
-const Users = require("../models/User")
+const User = require("../models/User.model")
 const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcrypt")
 
@@ -6,7 +6,7 @@ module.exports = {
 
     async getAllUsers(req, res) {
         try {
-            const users = await Users.find({})
+            const users = await User.findAll();
             res.Response({ data: users })
         } catch (error) {
             res.Response({ message: error.message })
@@ -15,8 +15,11 @@ module.exports = {
 
     async createUser(req, res) {
         try {
-            const newUser = new Users(req.body)
-            await newUser.save()
+            const newUser = await User.create({
+                nom_prenom: req.body.nom_prenom,
+                username: req.body.username,
+                password: bcrypt.hashSync(req.body.password, parseInt(process.env.UserPasswordSaltRound))
+            })
             res.Response({ message: newUser })
         } catch (error) {
             res.Response({ message: error.message })

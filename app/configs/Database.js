@@ -24,18 +24,19 @@ const connect_db = async () => {
   try {
     await DB.authenticate();
     console.log(
-      "=================> Base de données connectées ! <================="
+      "=================> Base de données connectée ! <================="
     );
     return DB;
   } catch (error) {
-    console.log(error);
-    // logger.error(
-    //   "=================> Erreur lors de la connexion à la base de données <=================\n",
-    //   error
-    // );
+    logger.error(
+      "=================> Erreur lors de la connexion à la base de données <=================\n",
+      error
+    );
     process.exit(1);
   }
 };
+
+DB.sync();
 
 
 module.exports = {
