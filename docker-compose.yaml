@@ -6,6 +6,13 @@ services:
     build: ./app
     volumes:
       - ./app:/app/
+    develop:
+      watch:
+        # may paths
+        - path: ./app/Dockerfile
+          action: rebuild
+        - path: ./app/package.json
+          action: rebuild
     expose:
       - 5000
     ports:

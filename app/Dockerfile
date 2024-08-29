@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package.json .
 
-RUN npm install --cache /tmp/empty-cache --prefer-offline 
+RUN npm install 
 
 COPY . .
 
