@@ -1,13 +1,14 @@
 const User = require("../models/User.model")
 const jsonwebtoken = require("jsonwebtoken");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const log = require("../utils/Logger");
 
 module.exports = {
 
     async getAllUsers(req, res) {
         try {
             const users = await User.findAll({
-                attributes: ["id", "nom_prenom", "username"]
+                attributes: ["id", "nom_prenom", "username", "createdAt", "updatedAt"]
             });
             res.Response({ data: users })
         } catch (error) {
@@ -28,7 +29,7 @@ module.exports = {
         }
     },
 
-    async getUserById(req, res) {
+    async getUserByUsername(req, res) {
         try {
             const user = await User.findOne({
                 where: {
@@ -39,6 +40,23 @@ module.exports = {
         } catch (error) {
             res.Response({ message: error.message })
         }
+    },
+
+    async deleteUser(req, res) {
+        User.destroy({
+            where: {
+                username: req.params.username
+            }
+        }).then(async (value) => {
+            if (value == 0) {
+                res.status(404).Response({ message: "User not found !" })
+            }
+            else{
+                res.Response({ message: "User deleted !" })
+            }
+        }).catch(error => {
+            res.Response({ message: error.message })
+        })
     },
 
     async loginUser(req, res) {
