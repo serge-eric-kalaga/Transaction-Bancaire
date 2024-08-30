@@ -1,17 +1,26 @@
-const express = require("express")
+const express = require("express");
 
-const userRouter = express.Router()
+const userRouter = express.Router();
 
-const {getAllUsers, createUser, loginUser, getUserByUsername, deleteUser} = require("../controllers/User.controller")
+const {
+  getAllUsers,
+  createUser,
+  loginUser,
+  getUserByUsername,
+  deleteUser,
+  updateUser,
+} = require("../controllers/User.controller");
 
-userRouter.get("/", getAllUsers)
+userRouter.get("/", getAllUsers);
 
-userRouter.get("/:username", getUserByUsername)
+userRouter.get("/:username", getUserByUsername);
 
-userRouter.delete("/:username", deleteUser)
+userRouter.delete("/:username", deleteUser);
 
-userRouter.post("/register", createUser)
+userRouter.patch("/:username", updateUser);
 
-userRouter.post("/login", loginUser)
+userRouter.post("/register", createUser);
+
+userRouter.post("/login", loginUser);
 
 module.exports = userRouter;

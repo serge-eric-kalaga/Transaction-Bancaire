@@ -12,7 +12,7 @@ module.exports = {
             });
             res.Response({ data: users })
         } catch (error) {
-            res.Response({ message: error.message })
+            res.status(400).Response({ message: error.message })
         }
     },
 
@@ -25,7 +25,7 @@ module.exports = {
             })
             res.Response({ data: newUser })
         } catch (error) {
-            res.Response({ message: error.message })
+            res.status(400).Response({ message: error.message })
         }
     },
 
@@ -43,7 +43,7 @@ module.exports = {
                 res.Response({ data: user })
             }
         } catch (error) {
-            res.Response({ message: error.message })
+            res.status(400).Response({ message: error.message })
         }
     },
 
@@ -60,8 +60,28 @@ module.exports = {
                 res.Response({ message: "User deleted !" })
             }
         }).catch(error => {
-            res.Response({ message: error.message })
+            res.status(400).Response({ message: error.message })
         })
+    },
+
+    async updateUser(req, res) {
+        try {
+            const user = await User.findOne({
+                where: {
+                    username: req.params.username
+                }
+            })
+            if (!user) {
+                res.status(404).Response({ message: "User not found !" })
+            }
+            else {
+                await user.update(req.body)
+                await user.save()
+                res.Response({ data: user })
+            }
+        } catch (error) {
+            res.status(400).Response({ message: error.message })
+        }
     },
 
     async loginUser(req, res) {
@@ -104,7 +124,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.Response({ message: error.message })
+            res.status(400).Response({ message: error.message })
         }
     }
 
