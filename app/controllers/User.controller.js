@@ -23,7 +23,7 @@ module.exports = {
                 username: req.body.username,
                 password: bcrypt.hashSync(req.body.password, parseInt(process.env.UserPasswordSaltRound))
             })
-            res.Response({ message: newUser })
+            res.Response({ data: newUser })
         } catch (error) {
             res.Response({ message: error.message })
         }
@@ -36,7 +36,12 @@ module.exports = {
                     username: req.params.username
                 }
             })
-            res.Response({ data: user })
+            if (!user) {
+                res.status(404).Response({ message: "User not found !" })
+            }
+            else {
+                res.Response({ data: user })
+            }
         } catch (error) {
             res.Response({ message: error.message })
         }
