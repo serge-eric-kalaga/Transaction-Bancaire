@@ -1,5 +1,4 @@
-const Users = require("../models/User.model")
-const jsonwebtoken = require("jsonwebtoken");
+const {User} = require("../models/User.model")
 const bcrypt = require("bcrypt");
 
 module.exports =
@@ -8,22 +7,25 @@ module.exports =
     async InitUser() {
 
         console.log("========== Initialisation de l'utilisateur par defaut ==========");
-        // user exist 
-        const username = "serge";
-        const userExist = Users.findOne({ username: username }).exec();
+        const username = "admin";
+        const userExist = User.findOne({
+            where: { username: username }
+        });
         
-        if (!userExist) {
-
-            const user = new Users({
+        if (await userExist == null) {
+            User.create({
                 username: username,
-                password: "1234567890",
-                fullname: "Serge Eric Kalaga"
+                password: "admin",
+                nom_prenom: "Admin"
+            }).then(async (value) => {
+                console.log("Initialisation de l'utilisateur par defaut ok !");
+            }).catch(error => {
+                console.log("Initialisation de l'utilisateur par defaut KO !");
             })
-            await user.save()
-            console.log("Initialisation de l'utilisateur par defaut ok !");
+            console.log("Succes !");
         }
         else{
-            console.log("=================> Default User Already Exist ! <=================");
+            console.log("Default User Already Exist ! ");
         }
     }
 }

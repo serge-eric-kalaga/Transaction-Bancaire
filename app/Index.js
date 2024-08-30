@@ -79,6 +79,6 @@ app.use(globalErrorHandler);
 
 app.listen(PORT, "0.0.0.0", async () => {
   console.log(`App running on http://localhost:${PORT}`);
-  connect_db();
-  // await InitUser();
+  await connect_db();
+  await InitUser();
 });
