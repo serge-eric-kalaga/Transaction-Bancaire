@@ -1,4 +1,4 @@
-const User = require("../models/User.model")
+const {User, CreateUserModel} = require("../models/User.model")
 const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const log = require("../utils/Logger");
@@ -16,16 +16,20 @@ module.exports = {
         }
     },
 
-    async createUser(req, res) {
+    async createUser(req, res, next) {
         try {
-            const newUser = await User.create({
-                nom_prenom: req.body.nom_prenom,
-                username: req.body.username,
-                password: bcrypt.hashSync(req.body.password, parseInt(process.env.UserPasswordSaltRound))
+            CreateUserModel.validateAsync(req.body).then(async (value) => {
+                const newUser = await User.create({
+                    nom_prenom: req.body.nom_prenom,
+                    username: req.body.username,
+                    password: bcrypt.hashSync(req.body.password, parseInt(process.env.UserPasswordSaltRound))
+                })
+                res.Response({ data: newUser })
+            }).catch(err => {
+                next(err);
             })
-            res.Response({ data: newUser })
         } catch (error) {
-            res.status(400).Response({ message: error.message })
+            next(err);
         }
     },
 

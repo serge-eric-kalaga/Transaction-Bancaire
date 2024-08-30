@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
+const Joi = require("joi");
 const { DB } = require("../configs/Database");
 
 const User = DB.define(
@@ -26,6 +27,10 @@ const User = DB.define(
   {}
 );
 
-module.exports = User;
+const CreateUserModel = Joi.object({
+  nom_prenom: Joi.string().required().min(3).max(200),
+  username: Joi.string().required().min(3).max(40).alphanum(),
+  password: Joi.string().required().min(4),
+});
 
-
+module.exports = { User, CreateUserModel };
