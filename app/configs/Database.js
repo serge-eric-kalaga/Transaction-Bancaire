@@ -1,3 +1,4 @@
+const e = require("express");
 const logger = require("../utils/Logger");
 const { Sequelize } = require("sequelize");
 
@@ -32,6 +33,8 @@ const connect_db = async () => {
       "=================> Erreur lors de la connexion à la base de données <=================\n",
       error
     );
+    console.log(error);
+    
     process.exit(1);
   }
 };
