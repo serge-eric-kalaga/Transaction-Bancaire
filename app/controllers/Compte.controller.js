@@ -56,11 +56,11 @@ module.exports = {
         })
     },
 
-    async updateCompte(req, res) {
+    async updateCompte(req, res, next) {
         try {
             const compte = await Compte.findOne({
                 where: {
-                    id: req.params.id
+                    numero_compte: req.params.numero_compte
                 }
             })
             if (!compte) {
@@ -71,10 +71,12 @@ module.exports = {
                     await compte.update(req.body)
                     await compte.save()
                     res.Response({ data: compte })
+                }).catch(err => {
+                    next(err);  
                 })
             }
         } catch (error) {
-            res.status(400).Response({ message: error.message })
+            next(err);  
         }
     },
 

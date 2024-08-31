@@ -11,7 +11,7 @@ compteRouter.get("/:numero_compte", getCompteByNumero);
 
 compteRouter.delete("/:numero_compte", deleteCompte);
 
-compteRouter.patch("/:id", updateCompte);
+compteRouter.patch("/:numero_compte", updateCompte);
 
 compteRouter.post("/", createCompte);
 

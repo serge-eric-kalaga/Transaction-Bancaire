@@ -12,5 +12,6 @@ module.exports = {
   CreateUserModel,
   UpdateUserModel,
   CreateCompteModel,
+  UpdateCompteModel,
   CreateTransactionModel,
 };
