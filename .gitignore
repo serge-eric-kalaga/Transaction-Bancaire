@@ -40,6 +40,9 @@ package-lock.json
 data/mongo/*
 data/mysql/*
 data/postgres/*
+data/redis/*
+data/prometheus/*
+data/grafana/*
 
 monitoring/grafana/grafana_data/*
 monitoring/prometheus/prometheus_data/*

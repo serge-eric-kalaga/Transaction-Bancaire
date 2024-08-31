@@ -39,10 +39,10 @@ const connect_db = async () => {
   }
 };
 
-DB.sync({
-  alter: true,
-  force: true,
-});
+// DB.sync({
+//   alter: true,
+//   force: true,
+// });
 
 
 module.exports = {

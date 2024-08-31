@@ -6,13 +6,13 @@ const compteRouter = express.Router();
 
 compteRouter.get("/", getAllComptes);
 
-compteRouter.get("/:id", getCompteById);
+// compteRouter.get("/:id", getCompteById);
 
 compteRouter.get("/:numero", getCompteByNumero);
 
 compteRouter.delete("/:id", deleteCompte);
 
-compteRouter.patch("/:id", updateCompte);
+// compteRouter.patch("/:id", updateCompte);
 
 compteRouter.post("/", createCompte);
 

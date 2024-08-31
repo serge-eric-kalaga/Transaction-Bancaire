@@ -37,25 +37,7 @@ module.exports = {
         } catch (error) {
             next(err);
         }
-    },
-
-    async getCompteById(req, res) {
-        try {
-            const compte = await Compte.findOne({
-                where: {
-                    id: req.params.id
-                }
-            })
-            if (!compte) {
-                res.status(404).Response({ message: "Compte not found !" })
-            }
-            else {
-                res.Response({ data: compte })
-            }
-        } catch (error) {
-            res.status(400).Response({ message: error.message })
-        }
-    },  
+    }, 
 
     async deleteCompte(req, res) {
         Compte.destroy({
@@ -103,6 +85,7 @@ module.exports = {
                     numero_compte: req.params.numero
                 }
             })
+            
             if (!compte) {
                 res.status(404).Response({ message: "Compte not found !" })
             }
