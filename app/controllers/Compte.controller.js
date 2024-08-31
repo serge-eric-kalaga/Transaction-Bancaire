@@ -42,7 +42,7 @@ module.exports = {
     async deleteCompte(req, res) {
         Compte.destroy({
             where: {
-                id: req.params.id
+                numero_compte: req.params.numero_compte
             }
         }).then(async (value) => {
             if (value == 0) {
@@ -82,7 +82,7 @@ module.exports = {
         try {
             const compte = await Compte.findOne({
                 where: {
-                    numero_compte: req.params.numero
+                    numero_compte: req.params.numero_compte
                 }
             })
             
