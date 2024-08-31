@@ -3,7 +3,7 @@ const Joi = require("joi");
 const { DB } = require("../configs/Database");
 
 
-DB.define(
+const Transaction = DB.define(
     "Transaction",
     {
         id: {
@@ -14,7 +14,7 @@ DB.define(
         date: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Date.now(),
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
         montant: {
             type: DataTypes.INTEGER,

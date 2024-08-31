@@ -1,0 +1,17 @@
+{
+	"ulid": "01J6MWXZ60R61TEBJ37AG284DQ",
+	"minTime": 1725120000000,
+	"maxTime": 1725127200000,
+	"stats": {
+		"numSamples": 12485582,
+		"numSeries": 1901,
+		"numChunks": 104899
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01J6MWXZ60R61TEBJ37AG284DQ"
+		]
+	},
+	"version": 1
+}

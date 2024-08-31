@@ -2,9 +2,6 @@
 const express = require("express");
 const { connect_db } = require("./configs/Database");
 
-// ============ Import Routes
-const userRouter = require("./routes/User.route");
-
 // ============ Import Middlewares
 const LoginRequired = require("./middlewares/Auth");
 const loggerMiddleware = require("./middlewares/Logger");
@@ -13,6 +10,10 @@ const Response = require("./middlewares/Response");
 const { InitUser } = require("./configs/InitData");
 const { updateMetrics, Metrics } = require('./middlewares/Metrics');
 const testRequestManyTimes = require("./utils/TestRequest");
+
+// ============ Import Routes
+const userRouter = require("./routes/User.route");
+const compteRouter = require("./routes/Compte.route");
 
 const PORT = process.env.PORT;
 
@@ -35,6 +36,8 @@ app.get("/", (req, res, next) => {
 
 // My routers
 app.use("/users", userRouter);
+app.use("/comptes", compteRouter);
+
 // Test many request
 app.get("/test-many-request", async (req, res) => {
   await testRequestManyTimes();

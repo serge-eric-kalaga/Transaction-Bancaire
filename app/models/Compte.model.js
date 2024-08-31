@@ -3,7 +3,7 @@ const Joi = require("joi");
 const { DB } = require("../configs/Database");
 
 
-DB.define(
+const Compte = DB.define(
     "Compte",
     {
         id: {
@@ -17,8 +17,7 @@ DB.define(
         },
         date_naissance: {
             type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: Date.now(),
+            allowNull: true,
         },
         profession: {
             type: DataTypes.STRING,
@@ -34,7 +33,7 @@ DB.define(
             unique: true,
         },
         numero_compte: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
@@ -48,12 +47,22 @@ DB.define(
 
 
 const CreateCompteModel = Joi.object({
+    type_compte: Joi.number().required().min(1).max(2),
     nom_prenom: Joi.string().required().min(3).max(200),
-    date_naissance: Joi.date().required(),
-    profession: Joi.string().required().min(3).max(200),
-    adresse: Joi.string().required().min(3).max(200),
+    date_naissance: Joi.date(),
+    profession: Joi.string().min(3).max(200),
+    adresse: Joi.string().min(3).max(200),
     telephone: Joi.string().required().min(3).max(200),
-    numero_compte: Joi.number().required().min(3).max(200),
+    solde: Joi.number().min(0),
 });
 
-module.exports = { Compte, CreateCompteModel };
+const UpdateCompteModel = Joi.object({
+    nom_prenom: Joi.string().min(3).max(200),
+    date_naissance: Joi.date().required(),
+    profession: Joi.string().min(3).max(200),
+    adresse: Joi.string().min(3).max(200),
+    telephone: Joi.string().min(3).max(200),
+    solde: Joi.number().min(0),
+})
+
+module.exports = { Compte, CreateCompteModel, UpdateCompteModel };

@@ -33,4 +33,10 @@ const CreateUserModel = Joi.object({
   password: Joi.string().required().min(4),
 });
 
-module.exports = { User, CreateUserModel };
+const UpdateUserModel = Joi.object({
+  nom_prenom: Joi.string().min(3).max(200),
+  username: Joi.string().min(3).max(40).alphanum(),
+  password: Joi.string().min(4),
+})
+
+module.exports = { User, CreateUserModel, UpdateUserModel };

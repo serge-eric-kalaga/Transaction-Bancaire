@@ -1,7 +1,6 @@
-const {User, CreateUserModel} = require("../models/User.model")
+const {User, CreateUserModel, UpdateUserModel} = require("../models/Models")
 const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const log = require("../utils/Logger");
 
 module.exports = {
 
@@ -79,9 +78,11 @@ module.exports = {
                 res.status(404).Response({ message: "User not found !" })
             }
             else {
-                await user.update(req.body)
-                await user.save()
-                res.Response({ data: user })
+                UpdateUserModel.validateAsync(req.body).then(async (value) => {
+                    await user.update(req.body)
+                    await user.save()
+                    res.Response({ data: user })
+                })
             }
         } catch (error) {
             res.status(400).Response({ message: error.message })
