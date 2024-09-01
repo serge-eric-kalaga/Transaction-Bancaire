@@ -1,6 +1,5 @@
 // Compte.controller.js
 const { Compte, CreateCompteModel, UpdateCompteModel } = require("../models/Models");
-const bcrypt = require("bcrypt");
 const {genererNumeroCompte} = require("../utils/Fonctions");
 
 

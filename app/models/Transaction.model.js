@@ -32,11 +32,11 @@ const Transaction = DB.define(
 );
 
 const CreateTransactionModel = Joi.object({
-    date: Joi.date().required(),
-    montant: Joi.number().required().min(3).max(200),
-    type: Joi.string().required().min(3).max(200),
+    date: Joi.date(),
+    montant: Joi.number().required().min(500),
+    type: Joi.number().required().min(1).max(2),
     description: Joi.string().required().min(3).max(200),
-    compte_id: Joi.number().required().min(3).max(200),
+    numero_compte: Joi.string().required().min(13).max(13),
 }); 
 
 module.exports = { Transaction, CreateTransactionModel };

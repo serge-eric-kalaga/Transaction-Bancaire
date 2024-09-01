@@ -14,6 +14,7 @@ const testRequestManyTimes = require("./utils/TestRequest");
 // ============ Import Routes
 const userRouter = require("./routes/User.route");
 const compteRouter = require("./routes/Compte.route");
+const transactionRouter = require("./routes/Transaction.route");
 
 const PORT = process.env.PORT;
 
@@ -37,6 +38,7 @@ app.get("/", (req, res, next) => {
 // My routers
 app.use("/users", userRouter);
 app.use("/comptes", compteRouter);
+app.use("/transactions", transactionRouter);
 
 // Test many request
 app.get("/test-many-request", async (req, res) => {

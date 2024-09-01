@@ -1,3 +1,4 @@
+const { func } = require('joi');
 const { v4: uuidv4 } = require('uuid');
 
 function genererNumeroCompte(typeCompte=1) {
@@ -18,4 +19,15 @@ function genererNumeroCompte(typeCompte=1) {
 }
 
 
-module.exports = { genererNumeroCompte }
+function getTypeTransaction(type) {
+    if (type === 1) {
+        return 'Crédit';
+    } else if (type === 2) {
+        return 'Débit';
+    } else {
+        throw new Error('Type de transaction invalide');
+    }
+    
+}
+
+module.exports = { genererNumeroCompte, getTypeTransaction };
