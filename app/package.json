@@ -4,7 +4,8 @@
   "description": "",
   "main": "Index.js",
   "scripts": {
-    "dev": "nodemon Index.js"
+    "dev": "nodemon Index.js",
+    "cy:open": "cypress open"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "cypress": "^13.14.1",
     "nodemon": "^3.1.0"
   }
 }
