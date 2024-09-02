@@ -27,6 +27,12 @@ const connect_db = async () => {
     console.log(
       "=================> Base de données connectée ! <================="
     );
+
+    DB.sync({
+      // alter: true,
+      // force: true,
+    });
+    
     return DB;
   } catch (error) {
     logger.error(
@@ -38,11 +44,6 @@ const connect_db = async () => {
     process.exit(1);
   }
 };
-
-// DB.sync({
-//   alter: true,
-//   force: true,
-// });
 
 
 module.exports = {
