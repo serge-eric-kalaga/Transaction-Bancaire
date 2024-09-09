@@ -38,6 +38,10 @@ const totalHttpRequestDuration = new Gauge({
 
 function updateMetrics(req, res, next) {
     
+    if (req.path === '/metrics') {
+        return next();
+    }
+    
     let startTime = new Date().valueOf();
     res.addListener('finish', () => {
         let responseTime = (new Date().valueOf() - startTime); // milliseconds

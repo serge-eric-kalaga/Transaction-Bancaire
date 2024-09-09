@@ -52,6 +52,7 @@ services:
     image: grafana/grafana-enterprise
     ports:
       - "3030:3000"
+    user: root
     volumes:
       - ./data/grafana:/var/lib/grafana
       - ./data/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
@@ -61,6 +62,7 @@ services:
   
   prometheus:
     image: prom/prometheus
+    user: root
     volumes:
       # - prometheus_data:/prometheus
       - ./data/prometheus:/prometheus

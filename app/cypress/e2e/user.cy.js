@@ -33,8 +33,10 @@ describe("User", () => {
       expect(response.status).to.eq(200);
     });
   });
-});
 
-// describe("Authentification", () => {
-  
-// });
+  it("Suppression d'un utilisateur", () => {
+    cy.request("DELETE", "http://localhost:5000/users/serge").then((response) => {
+      expect(response.status).to.eq(200);
+    });
+  });
+});
