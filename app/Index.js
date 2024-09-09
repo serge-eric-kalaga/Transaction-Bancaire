@@ -15,6 +15,7 @@ const testRequestManyTimes = require("./utils/TestRequest");
 const userRouter = require("./routes/User.route");
 const compteRouter = require("./routes/Compte.route");
 const transactionRouter = require("./routes/Transaction.route");
+const swaggerRouter = require("./routes/Swagger");
 
 const PORT = process.env.PORT;
 
@@ -39,6 +40,7 @@ app.get("/", (req, res, next) => {
 app.use("/users", userRouter);
 app.use("/comptes", compteRouter);
 app.use("/transactions", transactionRouter);
+// app.use("/api-docs", swaggerRouter);
 
 // Test many request
 app.get("/test-many-request", async (req, res) => {

@@ -1,0 +1,136 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API de Transactions Bancaires",
+      "version": "1.0.0",
+      "description": "Documentation de l'API pour les transactions bancaires"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5000",
+        "description": "Serveur de développement"
+      }
+    ],
+    "paths": {
+      "/comptes": {
+        "get": {
+          "summary": "Obtenir tous les comptes",
+          "responses": {
+            "200": {
+              "description": "Liste des comptes",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "nom_prenom": {
+                              "type": "string"
+                            },
+                            "date_naissance": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "profession": {
+                              "type": "string"
+                            },
+                            "adresse": {
+                              "type": "string"
+                            },
+                            "telephone": {
+                              "type": "string"
+                            },
+                            "numero_compte": {
+                              "type": "string"
+                            },
+                            "solde": {
+                              "type": "number",
+                              "format": "float"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Erreur de requête"
+            }
+          }
+        }
+      },
+      "/comptes/{numero_compte}": {
+        "get": {
+          "summary": "Obtenir un compte par numéro",
+          "parameters": [
+            {
+              "name": "numero_compte",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compte trouvé",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "nom_prenom": {
+                            "type": "string"
+                          },
+                          "date_naissance": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "profession": {
+                            "type": "string"
+                          },
+                          "adresse": {
+                            "type": "string"
+                          },
+                          "telephone": {
+                            "type": "string"
+                          },
+                          "numero_compte": {
+                            "type": "string"
+                          },
+                          "solde": {
+                            "type": "number",
+                            "format": "float"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compte non trouvé"
+            }
+          }
+        }
+      }
+    }
+  }
+  
