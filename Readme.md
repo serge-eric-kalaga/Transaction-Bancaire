@@ -1,65 +1,103 @@
-# Express-Mysql-Template
 
-Ce projet est un modèle d'application Express.js avec une base de données MySQL et une intégration de Prometheus pour la surveillance.
+---
 
-## Démarrage de l'application avec Docker Compose
+# Application de Transaction Bancaire
 
-1. **Clonez le dépôt**
+Cette application est une API bancaire construite avec Express.js, fournissant des routes pour la gestion des comptes, transactions et utilisateurs. Elle inclut des outils de monitoring avec Prometheus et Grafana, et fonctionne entièrement avec Docker Compose.
+
+## Prérequis
+
+- Docker
+- Docker Compose
+
+## Installation
+
+1. Clonez le dépôt :
 
    ```bash
-   git clone <URL_DU_DEPOT>
-   cd Express-Mysql-Template
+   git clone https://github.com/serge-eric-kalaga/Transaction-Bancaire.git
+   ```
 
-## Créez un fichier `.env`
+2. Accédez au répertoire du projet :
 
-Copiez le fichier `.env.example` en `.env` et configurez les variables d'environnement selon vos besoins.
+   ```bash
+   cd Transaction-Bancaire
+   ```
 
-## Démarrez les services
+3. Lancez l'application avec Docker Compose :
 
-Assurez-vous que Docker et Docker Compose sont installés. Exécutez la commande suivante pour construire et démarrer les conteneurs :
+   ```bash
+   docker-compose up --build
+   ```
 
-```bash
-docker-compose up --build
-```
+   Cela démarre l'API ainsi que la base de données MySQL et les outils de monitoring (Prometheus et Grafana).
 
-## Routes de Base
+## Monitoring avec Grafana
 
-- `GET /` : Route de base, renvoie un message de succès.
-- `GET /users` : Route pour gérer les utilisateurs (voir le fichier `User.route.js` pour plus de détails).
-- `GET /metrics` : Expose les métriques pour Prometheus.
-- `GET /error-test` : Route de test pour générer une erreur et vérifier le gestionnaire d'erreurs global.
+Les métriques sont surveillées avec Prometheus et visualisées sur Grafana. Après avoir démarré l'application, accédez à Grafana via :
 
-## Structure du Projet
+- **Grafana** : `http://localhost:3030`
+- **Prometheus** : `http://localhost:9091`
 
-```
-└── 📁Express-Mysql-Template
-    └── 📁app
-        └── 📁configs
-            └── Database.js
-            └── HTTPStatusCode.js
-            └── InitData.js
-        └── 📁controllers
-            └── User.controller.js
-        └── 📁logs
-        └── 📁middlewares
-            └── Auth.js
-            └── ErrorHandler.js
-            └── Logger.js
-            └── Metrics.js
-            └── Response.js
-        └── 📁models
-            └── User.model.js
-        └── 📁routes
-            └── User.route.js
-        └── 📁utilities
-        └── 📁utils
-            └── Logger.js
-        └── .dockerignore
-        └── .env
-        └── Dockerfile
-        └── Index.js
-        └── package-lock.json
-        └── package.json
-    └── 📁data
-    └── 📁monitoring
-```
+### Importation du dashboard
+
+1. Téléchargez le fichier `dashboard_ExpressJS (Transaction Bancaire).json` dans le répertoire `data/grafana/provisioning/dashboards/`.
+2. Accédez à Grafana via `http://localhost:3030`.
+3. Cliquez sur le bouton `Plus` en haut à droite de la page.
+4. Sélectionnez `Import` et choisissez le fichier `dashboard_ExpressJS (Transaction Bancaire)-1725888412968.json`.
+5. Cliquez sur `Import`.
+6. Une fois le fichier importé, cliquez sur `Home` en haut à droite de la page.
+7. Cliquez sur `Explorer`.
+8. Sélectionnez le dashboard `ExpressJS (Transaction Bancaire)` et cliquez sur `Open`.
+9. Cliquez sur `Save`.
+
+### Métriques disponibles sur Grafana
+
+- Requêtes HTTP par statut (200, 400, 500, etc.)
+- Requêtes HTTP par méthode (GET, POST, PUT, DELETE)
+- Durée des requêtes (latence moyenne)
+- Nombre total de requêtes HTTP
+- Utilisation du CPU
+- Utilisation de la mémoire
+
+## Base de données (PHPMyAdmin)
+
+- URL : `http://localhost:8082`
+- Nom d'utilisateur : `serge`
+- Mot de passe : `1234567890`
+
+## Routes de l'API
+
+### Comptes
+
+- `GET /comptes/` : Récupère tous les comptes
+- `POST /comptes/` : Crée un nouveau compte
+- `GET /comptes/:numero_compte` : Récupère un compte par son numéro
+- `PATCH /comptes/:numero_compte` : Met à jour un compte
+- `DELETE /comptes/:numero_compte` : Supprime un compte
+
+### Transactions
+
+- `GET /transactions/` : Récupère toutes les transactions
+- `POST /transactions/` : Crée une nouvelle transaction
+- `GET /transactions/:numero_compte` : Récupère les transactions d’un compte spécifique
+- `DELETE /transactions/:id` : Supprime une transaction
+
+### Utilisateurs
+
+- `GET /users/` : Récupère tous les utilisateurs
+- `POST /users/register` : Crée un nouvel utilisateur
+- `POST /users/login` : Connexion d'un utilisateur
+- `GET /users/:username` : Récupère un utilisateur par nom d'utilisateur
+- `PATCH /users/:username` : Met à jour un utilisateur
+- `DELETE /users/:username` : Supprime un utilisateur
+
+## Tests
+
+Vous pouvez tester l'API en important la collection Postman fournie : `collection_TransactionBancaire.json`. Cette collection contient toutes les requêtes de test.
+
+1. Ouvrez Postman.
+2. Importez la collection.
+3. Exécutez les requêtes et vérifiez les réponses.
+
+---
