@@ -58,7 +58,7 @@ const CreateCompteModel = Joi.object({
 
 const UpdateCompteModel = Joi.object({
     nom_prenom: Joi.string().min(3).max(200),
-    date_naissance: Joi.date().required(),
+    date_naissance: Joi.date(),
     profession: Joi.string().min(3).max(200),
     adresse: Joi.string().min(3).max(200),
     telephone: Joi.string().min(3).max(200),

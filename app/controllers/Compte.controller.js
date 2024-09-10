@@ -57,13 +57,14 @@ module.exports = {
 
     async updateCompte(req, res, next) {
         try {
+            const numero_compte = req.params.numero_compte;
             const compte = await Compte.findOne({
                 where: {
-                    numero_compte: req.params.numero_compte
+                    numero_compte: numero_compte
                 }
             })
             if (!compte) {
-                res.status(404).Response({ message: "Compte not found !" })
+                res.status(404).Response({ message: `Compte ${numero_compte} not found !` })
             }
             else {
                 UpdateCompteModel.validateAsync(req.body).then(async (value) => {
@@ -81,14 +82,15 @@ module.exports = {
 
     async getCompteByNumero(req, res) {
         try {
+            const numero_compte = req.params.numero_compte;
             const compte = await Compte.findOne({
                 where: {
-                    numero_compte: req.params.numero_compte
+                    numero_compte: numero_compte
                 }
             })
             
             if (!compte) {
-                res.status(404).Response({ message: "Compte not found !" })
+                res.status(404).Response({ message: `Compte ${numero_compte} not found !` })
             }
             else {
                 res.Response({ data: compte })

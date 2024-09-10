@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 // Test API de la creation, modification, et la suppression d'un utilisateur, et le login
 
+
 describe("User", () => {
   it("Création d'un utilisateur", () => {
     cy.request("POST", "http://localhost:5000/users/register/", {
@@ -8,7 +9,6 @@ describe("User", () => {
       username: "serge",
       password: "1234567890",
     }).then((response) => {
-    //   Creation reussie ou existante
       expect(response.status).to.eq(200);
       expect(response.body.data.username).to.eq("serge");
       expect(response.body.data.nom_prenom).to.eq("KALAGA Serge");
