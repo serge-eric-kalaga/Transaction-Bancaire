@@ -70,7 +70,10 @@ app.use(globalErrorHandler);
 app.listen(PORT, "0.0.0.0", async () => {
   console.log(`App running on http://localhost:${PORT}`);
   await connect_db();
-  await InitUser();
+  
+  setTimeout(async () => {
+    await InitUser();
+  }, 3000);
 });
 
 

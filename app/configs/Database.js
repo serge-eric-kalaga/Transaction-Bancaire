@@ -29,7 +29,7 @@ const connect_db = async () => {
     );
 
     DB.sync({
-      // alter: true,
+      alter: true,
       // force: true,
     });
     
