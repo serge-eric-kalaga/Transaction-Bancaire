@@ -4,8 +4,8 @@ const { Sequelize } = require("sequelize");
 
 const DB = new Sequelize(
   process.env.MYSQL_DATABASE,
-  process.env.MYSQL_USER,
-  process.env.MYSQL_PASSWORD,
+  process.env.DATABASE_USER,
+  process.env.MYSQL_ROOT_PASSWORD,
   {
     host: process.env.DATABASE_HOST,
     dialect: "mysql",
@@ -20,6 +20,7 @@ const DB = new Sequelize(
     timezone: "+00:00",
   }
 );
+
 
 const connect_db = async () => {
   try {
