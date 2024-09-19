@@ -38,7 +38,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "ddwphaas1qi9sb"
+        "uid": "prometheus"
       },
       "description": "Nombre Total De Requêtes HTTP",
       "fieldConfig": {
@@ -88,7 +88,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "ddwphaas1qi9sb"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "sum(nodejs_http_total_count)",
@@ -106,7 +106,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "ddwphaas1qi9sb"
+        "uid": "prometheus"
       },
       "description": "Nombre de requêtes HTTP par méthode (GET, POST, PUT, PATCH, DELETE)",
       "fieldConfig": {
@@ -160,7 +160,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "ddwphaas1qi9sb"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "sum by (method) (nodejs_http_total_count)",
@@ -178,7 +178,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "ddwphaas1qi9sb"
+        "uid": "prometheus"
       },
       "description": "Durée des requêtes (latence moyenne)",
       "fieldConfig": {
@@ -260,7 +260,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "ddwphaas1qi9sb"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.95, sum(rate(nodejs_http_response_time_bucket[5m])) by (le))\n",
@@ -277,7 +277,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "ddwphaas1qi9sb"
+        "uid": "prometheus"
       },
       "description": "Voir les statuts des requêtes pour surveiller les erreurs ou succès",
       "fieldConfig": {
@@ -327,7 +327,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "ddwphaas1qi9sb"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "sum by (code) (nodejs_http_total_count)\n",
@@ -357,7 +357,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "ddwphaas1qi9sb"
+        "uid": "prometheus"
       },
       "description": "Vérifier l'utilisation du CPU par l'application",
       "fieldConfig": {
@@ -437,7 +437,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "ddwphaas1qi9sb"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
@@ -454,7 +454,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "ddwphaas1qi9sb"
+        "uid": "prometheus"
       },
       "description": "Surveiller la mémoire libre",
       "fieldConfig": {
@@ -517,7 +517,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "ddwphaas1qi9sb"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": " node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100",
