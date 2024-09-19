@@ -62,7 +62,8 @@ services:
   # ====> Monitoring <====
 
   grafana:
-    image: grafana/grafana-enterprise
+    # image: grafana/grafana-enterprise
+    build: ./monitoring/grafana
     ports:
       - "3030:3000"
     user: root
